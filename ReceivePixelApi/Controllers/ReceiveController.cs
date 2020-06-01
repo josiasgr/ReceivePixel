@@ -22,6 +22,8 @@ namespace receivePixel.Controllers
         [HttpGet]
         public Task GetAsync()
         {
+            Response.Headers.Add("Content-Type", "application/json");
+
             if (Request.Query.Any())
             {
                 return _pixelStorageService.SaveAsync(new Pixel
@@ -31,6 +33,7 @@ namespace receivePixel.Controllers
                     Query = Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString())
                 });
             }
+
             return Task.CompletedTask;
         }
     }
