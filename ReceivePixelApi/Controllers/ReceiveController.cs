@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using receivePixel.Models;
 using receivePixel.Services;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,21 +21,23 @@ namespace receivePixel.Controllers
         }
 
         [HttpGet]
-        public Task GetAsync()
+        public async Task<FileContentResult>  GetAsync()
         {
-            Response.Headers.Add("Content-Type", "application/json");
-
             if (Request.Query.Any())
             {
-                return _pixelStorageService.SaveAsync(new Pixel
+                await _pixelStorageService.SaveAsync(new Pixel
                 {
                     QueryString = Request.QueryString.ToString(),
                     Headers = Request.Headers.ToDictionary(k => k.Key, v => v.Value.ToString()),
                     Query = Request.Query.ToDictionary(k => k.Key, v => v.Value.ToString())
                 });
+
             }
 
-            return Task.CompletedTask;
+            //return empty gif
+            const string clearGif1X1 = "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+            return new FileContentResult(
+                               Convert.FromBase64String(clearGif1X1), "image/gif");
         }
     }
 }
