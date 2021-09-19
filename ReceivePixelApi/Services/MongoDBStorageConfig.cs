@@ -7,13 +7,13 @@ namespace receivePixel.Services
         public string ConnectionString()
         {
             return Environment.GetEnvironmentVariable("ConnectionString")
-                    ?? throw new ArgumentNullException();
+                    ?? throw new NullReferenceException();
         }
 
         public string DatabaseName()
         {
             return Environment.GetEnvironmentVariable("DatabaseName")
-                    ?? throw new ArgumentNullException();
+                    ?? throw new NullReferenceException();
         }
     }
 }
